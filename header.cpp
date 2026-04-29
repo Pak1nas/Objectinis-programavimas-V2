@@ -9,6 +9,51 @@
 
 using namespace std;
 
+Student::Student() : egz_ ( 0 ), vid_ ( 0 ), med_ ( 0 ) {}
+
+Student::Student ( const string& v, const string& p, const vector<double>& nd, double egz )
+    : vardas_ ( v ), pavarde_ ( p ), nd_ ( nd ), egz_ ( egz ), vid_ ( 0 ), med_ ( 0 ) {}
+
+Student::Student ( const Student& other )
+    : vardas_ ( other.vardas_ ), pavarde_ ( other.pavarde_ ),
+      nd_ ( other.nd_ ), egz_ ( other.egz_ ), vid_ ( other.vid_ ), med_ ( other.med_ ) {}
+
+Student::Student ( Student&& other ) noexcept
+    : vardas_ ( move ( other.vardas_ ) ), pavarde_ ( move ( other.pavarde_ ) ),
+      nd_ ( move ( other.nd_ ) ), egz_ ( other.egz_ ), vid_ ( other.vid_ ), med_ ( other.med_ ) {}
+
+Student& Student::operator= ( const Student& other )
+{
+    if ( this != &other )
+    {
+        vardas_ = other.vardas_;
+        pavarde_ = other.pavarde_;
+        nd_ = other.nd_;
+        egz_ = other.egz_;
+        vid_ = other.vid_;
+        med_ = other.med_;
+    }
+
+    return *this;
+}
+
+Student& Student::operator= ( Student&& other ) noexcept
+{
+    if ( this != &other )
+    {
+        vardas_ = move ( other.vardas_ );
+        pavarde_ = move ( other.pavarde_ );
+        nd_ = move ( other.nd_ );
+        egz_ = other.egz_;
+        vid_ = other.vid_;
+        med_ = other.med_;
+    }
+
+    return *this;
+}
+
+Student::~Student() {}
+
 void Student::setVardas ( const string& v )
 {
     vardas_ = v;
