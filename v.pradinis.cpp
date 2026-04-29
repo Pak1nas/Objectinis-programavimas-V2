@@ -35,14 +35,11 @@ int main()
 
         if ( pasirinkimas == 1 )
         {
-            Student s;
             string v, p;
-
             cout << "Iveskite varda ir pavarde: ";
             cin >> v >> p;
-            s.setVardas ( v );
-            s.setPavarde ( p );
 
+            vector<double> nd;
             cout << "Iveskite namu darbu rezultatus (neigiamas skaicius baigia):" << endl;
 
             while ( true )
@@ -51,53 +48,55 @@ int main()
 
                 if ( x < 0 ) break;
 
-                s.addNd ( x );
+                nd.push_back ( x );
             }
 
             cout << "Egzamino rezultatas: ";
-            s.setEgz ( s_double() );
+            double egz = s_double();
 
+            Student s ( v, p, nd, egz );
             s.skaiciuoti();
             A.push_back ( s );
         }
 
         else if ( pasirinkimas == 2 )
         {
-            Student s;
             string v, p;
-
             cout << "Iveskite varda ir pavarde: ";
             cin >> v >> p;
-            s.setVardas ( v );
-            s.setPavarde ( p );
 
             cout << "Kiek generuoti namu darbu? ";
-            int nd = s_int();
+            int ndk = s_int();
 
-            for ( int i = 0; i < nd; i++ )
-                s.addNd ( atsitiktinis() );
+            vector<double> nd;
 
-            s.setEgz ( atsitiktinis() );
+            for ( int i = 0; i < ndk; i++ )
+                nd.push_back ( atsitiktinis() );
+
+            double egz = atsitiktinis();
+
+            Student s ( v, p, nd, egz );
             s.skaiciuoti();
             A.push_back ( s );
         }
 
         else if ( pasirinkimas == 3 )
         {
-            Student s;
-
             static vector<string> vardai = {"Mykolas", "Darius", "Motejus", "Nojus", "Jonas"};
             static vector<string> pavardes = {"Matulis", "Navierauskas", "Motejunas", "Stankus", "Mezetis"};
 
-            s.setVardas ( vardai[rand() % vardai.size()] );
-            s.setPavarde ( pavardes[rand() % pavardes.size()] );
+            string v = vardai[rand() % vardai.size()];
+            string p = pavardes[rand() % pavardes.size()];
 
-            int nd = rand() % 7 + 3;
+            int ndk = rand() % 7 + 3;
+            vector<double> nd;
 
-            for ( int i = 0; i < nd; i++ )
-                s.addNd ( atsitiktinis() );
+            for ( int i = 0; i < ndk; i++ )
+                nd.push_back ( atsitiktinis() );
 
-            s.setEgz ( atsitiktinis() );
+            double egz = atsitiktinis();
+
+            Student s ( v, p, nd, egz );
             s.skaiciuoti();
             A.push_back ( s );
         }
@@ -124,23 +123,17 @@ int main()
 
                 if ( ! ( ars >> v >> p ) ) continue;
 
-                Student s;
-                s.setVardas ( v );
-                s.setPavarde ( p );
-
                 vector<double> vals;
                 double x;
 
                 while ( ars >> x ) vals.push_back ( x );
 
-                if ( !vals.empty() )
-                {
-                    s.setEgz ( vals.back() );
-                    vals.pop_back();
+                if ( vals.empty() ) continue;
 
-                    for ( double nd : vals ) s.addNd ( nd );
-                }
+                double egz = vals.back();
+                vals.pop_back();
 
+                Student s ( v, p, vals, egz );
                 s.skaiciuoti();
                 A.push_back ( s );
             }
