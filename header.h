@@ -9,12 +9,21 @@ private:
     std::string vardas_;
     std::string pavarde_;
     std::vector<double> nd_;
-    double egz_ = 0.0;
-    double vid_ = 0.0;
-    double med_ = 0.0;
+    double egz_;
+    double vid_;
+    double med_;
 
 public:
-    Student() = default;
+    Student();
+    Student(const std::string& v, const std::string& p, const std::vector<double>& nd, double egz);
+
+    Student(const Student& other);
+    Student(Student&& other) noexcept;
+
+    Student& operator=(const Student& other);
+    Student& operator=(Student&& other) noexcept;
+
+    ~Student();
 
     void setVardas(const std::string& v);
     void setPavarde(const std::string& p);
