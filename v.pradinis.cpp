@@ -111,34 +111,12 @@ int main()
                 continue;
             }
 
-            string eil;
-            getline ( duom, eil );
+            Student s;
+            while(duom>>s)
+                A.push_back(s);
 
-            while ( getline ( duom, eil ) )
-            {
-                if ( eil.find_first_not_of ( " \t\r\n" ) == string::npos ) continue;
+            cout<<"Failas surastas: "<<A.size()<<" studentu"<<endl;
 
-                istringstream ars ( eil );
-                string v, p;
-
-                if ( ! ( ars >> v >> p ) ) continue;
-
-                vector<double> vals;
-                double x;
-
-                while ( ars >> x ) vals.push_back ( x );
-
-                if ( vals.empty() ) continue;
-
-                double egz = vals.back();
-                vals.pop_back();
-
-                Student s ( v, p, vals, egz );
-                s.skaiciuoti();
-                A.push_back ( s );
-            }
-
-            cout << "Faile buvo rasta: " << A.size() << " studentu" << endl;
         }
 
         else if ( pasirinkimas == 6 )
