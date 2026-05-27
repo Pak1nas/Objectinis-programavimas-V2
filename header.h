@@ -18,11 +18,11 @@ public:
     Student(const std::string& v, const std::string& p, const std::vector<double>& nd, double egz);
 
     //Rule of five
-    Student(const Student& other);
-    Student(Student&& other) noexcept;
+    Student(const Student& other); //copy
+    Student(Student&& other) noexcept; //move
 
-    Student& operator=(const Student& other);
-    Student& operator=(Student&& other) noexcept;
+    Student& operator=(const Student& other); //copy priskirimas
+    Student& operator=(Student&& other) noexcept; //move priskirimas
 
     ~Student();
 
