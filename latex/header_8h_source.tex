@@ -1,0 +1,58 @@
+\doxysection{header.\+h}
+\hypertarget{header_8h_source}{}\label{header_8h_source}\index{C:/Users/gnavi/Desktop/PLs/header.h@{C:/Users/gnavi/Desktop/PLs/header.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ HEADER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ HEADER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}zmogus.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }Student\ :\ \textcolor{keyword}{public}\ zmogus\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00010\ \ \ \ \ std::vector<double>\ nd\_;}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{double}\ egz\_;}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{double}\ vid\_;}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{double}\ med\_;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//Konstruktoriai}}
+\DoxyCodeLine{00017\ \ \ \ \ Student();}
+\DoxyCodeLine{00018\ \ \ \ \ Student(\textcolor{keyword}{const}\ std::string\&\ v,\ \textcolor{keyword}{const}\ std::string\&\ p,\ \textcolor{keyword}{const}\ std::vector<double>\&\ nd,\ \textcolor{keywordtype}{double}\ egz);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//Rule\ of\ five}}
+\DoxyCodeLine{00021\ \ \ \ \ Student(\textcolor{keyword}{const}\ Student\&\ other);}
+\DoxyCodeLine{00022\ \ \ \ \ Student(Student\&\&\ other)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ Student\&\ operator=(\textcolor{keyword}{const}\ Student\&\ other);}
+\DoxyCodeLine{00025\ \ \ \ \ Student\&\ operator=(Student\&\&\ other)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \string~Student();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//vidurkio/medianos\ skaiciavimas}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ skaiciuoti();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//getteriai}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{double}\ vid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{double}\ med()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//perrasomas\ abstraktus\ metodas}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ printInfo()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//<<\ >>\ operatoriai}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\&\ operator<<(std::ostream\&\ os,\ \textcolor{keyword}{const}\ Student\&\ s);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{friend}\ std::istream\&\ operator>>(std::istream\&\ is,\ Student\&\ s);}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//pagalbines\ funkcijos}}
+\DoxyCodeLine{00045\ \textcolor{keywordtype}{int}\ s\_int();}
+\DoxyCodeLine{00046\ \textcolor{keywordtype}{double}\ s\_double();}
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{int}\ atsitiktinis();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keywordtype}{void}\ spausdinti\_lentele(\textcolor{keyword}{const}\ std::vector<Student>\&\ A,\ \textcolor{keywordtype}{int}\ pas);}
+\DoxyCodeLine{00050\ \textcolor{keywordtype}{void}\ generuoti\_studentus(\textcolor{keywordtype}{int}\ kiekismok,\ \textcolor{keywordtype}{int}\ kiekpaz);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

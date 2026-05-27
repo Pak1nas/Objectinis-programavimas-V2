@@ -1,0 +1,33 @@
+\doxysection{zmogus.\+h}
+\hypertarget{zmogus_8h_source}{}\label{zmogus_8h_source}\index{C:/Users/gnavi/Desktop/PLs/zmogus.h@{C:/Users/gnavi/Desktop/PLs/zmogus.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ PERSON\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ PERSON\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }zmogus\ \{}
+\DoxyCodeLine{00008\ \textcolor{comment}{//Paveldimi\ duomenys}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00010\ \ \ \ \ std::string\ vardas\_;}
+\DoxyCodeLine{00011\ \ \ \ \ std::string\ pavarde\_;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//konstruktoriai}}
+\DoxyCodeLine{00015\ \ \ \ \ zmogus\ ()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00016\ \ \ \ \ zmogus(\textcolor{keyword}{const}\ std::string\&\ v,\ \textcolor{keyword}{const}\ std::string\&\ p):\ vardas\_(v),\ pavarde\_(p)\ \{\}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//virtualus\ destruktorius}}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~zmogus()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ vardas()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vardas\_;\ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ pavarde()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ pavarde\_;\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//Pure\ virtual\ metodas,\ kad\ klase\ taptu\ abstrakti}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ printInfo()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
