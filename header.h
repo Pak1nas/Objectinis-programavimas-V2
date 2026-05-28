@@ -3,11 +3,12 @@
 
 #include "zmogus.h"
 #include <string>
+#include <vector>
 #include "Vector.h"
 
 class Student : public zmogus {
 private:
-    std::vector<double> nd_;
+    Vector<double> nd_;
     double egz_;
     double vid_;
     double med_;
@@ -15,7 +16,7 @@ private:
 public:
     //Konstruktoriai
     Student();
-    Student(const std::string& v, const std::string& p, const std::vector<double>& nd, double egz);
+    Student(const std::string& v, const std::string& p, const Vector<double>& nd, double egz);
 
     //Rule of five
     Student(const Student& other);
@@ -46,7 +47,7 @@ int s_int();
 double s_double();
 int atsitiktinis();
 
-void spausdinti_lentele(const std::vector<Student>& A, int pas);
+void spausdinti_lentele(const Vector<Student>& A, int pas);
 void generuoti_studentus(int kiekismok, int kiekpaz);
 
 #endif
