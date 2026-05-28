@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -15,7 +14,7 @@ int main()
     //Isimciu rezimas cin
     cin.exceptions ( ios::failbit | ios::badbit );
 
-    vector<Student> A;
+    Vector<Student> A;
 
     //meniu ciklas
     while ( true )
@@ -42,7 +41,7 @@ int main()
             cout << "Iveskite varda ir pavarde: ";
             cin >> v >> p;
 
-            vector<double> nd;
+            Vector<double> nd;
             cout << "Iveskite namu darbu rezultatus (neigiamas skaicius baigia):" << endl;
 
             while ( true )
@@ -71,7 +70,7 @@ int main()
             cout << "Kiek generuoti namu darbu? ";
             int ndk = s_int();
 
-            vector<double> nd;
+            Vector<double> nd;
 
             for ( int i = 0; i < ndk; i++ )
                 nd.push_back ( atsitiktinis() );
@@ -85,14 +84,14 @@ int main()
 
         else if ( pasirinkimas == 3 )//Generuoti viska
         {
-            static vector<string> vardai = {"Mykolas", "Darius", "Motejus", "Nojus", "Jonas"};
-            static vector<string> pavardes = {"Matulis", "Navierauskas", "Motejunas", "Stankus", "Mezetis"};
+            static Vector<string> vardai = {"Mykolas", "Darius", "Motejus", "Nojus", "Jonas"};
+            static Vector<string> pavardes = {"Matulis", "Navierauskas", "Motejunas", "Stankus", "Mezetis"};
 
             string v = vardai[rand() % vardai.size()];
             string p = pavardes[rand() % pavardes.size()];
 
             int ndk = rand() % 7 + 3;
-            vector<double> nd;
+            Vector<double> nd;
 
             for ( int i = 0; i < ndk; i++ )
                 nd.push_back ( atsitiktinis() );
