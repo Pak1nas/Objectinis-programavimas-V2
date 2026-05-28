@@ -3,7 +3,7 @@
 
 #include "zmogus.h"
 #include <string>
-#include <vector>
+#include "Vector.h"
 
 class Student : public zmogus {
 private:
