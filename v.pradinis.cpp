@@ -1,146 +1,189 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <ctime>
+#include "header.h"
+
 using namespace std;
 
-struct stud {
-    string vardas;
-    string pavarde;
-    vector<double> tarp;
-    double egz;
-    double vid;
-    double med;
-};
+int main()
+{
+    //atsitiktiniu skaiciu inicializavimas
+    srand ( time ( NULL ) );
+    //Isimciu rezimas cin
+    cin.exceptions ( ios::failbit | ios::badbit );
 
-double atsitiktinis() {
-    return rand()%11;
-}
+    vector<Student> A;
 
-void skaiciuoti(stud &s) {
-    double sum=s.egz;
-    for (double x:s.tarp) sum += x;
-    s.vid=sum/(s.tarp.size()+1);
+    //meniu ciklas
+    while ( true )
+    {
+        cout << "1 - Rankinis studentu ivedimas" << endl;
+        cout << "2 - Generuoti tik pazymius" << endl;
+        cout << "3 - Generuoti vardus, pavardes ir pazymius" << endl;
+        cout << "4 - Skaityti is failo" << endl;
+        cout << "5 - Baigti darba" << endl;
+        cout << "6 - Generuoti mokiniu faila" << endl;
+        cout << "Pasirinkite: " << endl;
 
-    sort(s.tarp.begin(), s.tarp.end());
-    int d=s.tarp.size();
-    if (d%2==0)
-        s.med=(s.tarp[d/2]+s.tarp[d/2-1])/2.0;
-    else
-        s.med=s.tarp[d/2];
-}
+        int pasirinkimas = s_int();
 
-void spausdinti_lentele(const vector<stud>& A){
-    cout<<endl<<left<<setw(15)<<"Pavarde"<<left<<setw(15)<<"Vardas"<<right<<setw(20)<<"Galutinis (Vid.)"<<right<<setw(20)<<"Galutinis (Med.)"<<endl;
-
-    cout<<string(70, '-')<<endl;
-
-    for(const auto &s : A){
-        cout<<left<<setw(15)<<s.pavarde<<left<<setw(15)<<s.vardas<<right<<setw(20)<<fixed<<setprecision(2)<<s.vid<<right<<setw(20)<<fixed<<setprecision(2)<<s.med<<endl;
-    }
-}
-
-
-int main() {
-    srand(time(NULL));
-    vector<stud> A;
-
-    while (true) {
-        cout<<"1-Rankinis studentu ivedimas"<<endl;
-        cout<<"2-Generuoti tik pazymius"<<endl;
-        cout<<"3-Generuoti vardus, pavardes ir pazymius"<<endl;
-        cout<<"4-Skaityti is failo"<<endl;
-        cout<<"5-Baigti darba"<<endl;
-        cout<<"Pasirinkite:"<<endl;
-
-        int pasirinkimas;
-
-        if(!(cin>>pasirinkimas)){
-            cin.clear();
-            string kintamasis;
-            getline(cin, kintamasis);
-            cout<<"Ivedete neteisingo tipo duomeni. Bandykite dar karta"<<endl;
-            continue;
-        }
-
-
-        if (pasirinkimas==5) {
-            cout<<"Programa baigta."<<endl;
+        if ( pasirinkimas == 5 )//baigti darba
+        {
+            cout << "Programa baigta." << endl;
             break;
         }
 
-        if (pasirinkimas==1) {
-            stud s;
-            cout<<"Iveskite varda ir tada pavarde:"<<endl;
-            cin>>s.vardas >> s.pavarde;
+        if ( pasirinkimas == 1 )//pilnai ivesti duomenis
+        {
+            string v, p;
+            cout << "Iveskite varda ir pavarde: ";
+            cin >> v >> p;
 
-            cout<<"Iveskite namu darbu rezultatus (neigiamas skaicius baigia):"<<endl;
-            while (true) {
-                double x;
-                cin>>x;
-                if (x<0) break;
-                s.tarp.push_back(x);
+            vector<double> nd;
+            cout << "Iveskite namu darbu rezultatus (neigiamas skaicius baigia):" << endl;
+
+            while ( true )
+            {
+                double x = s_double();
+
+                if ( x < 0 ) break;
+
+                nd.push_back ( x );
             }
 
-            cout<<"Egzamino rezultatas: "<<endl;
-            cin>>s.egz;
+            cout << "Egzamino rezultatas: ";
+            double egz = s_double();
 
-            skaiciuoti(s);
-            A.push_back(s);
+            Student s ( v, p, nd, egz );
+            s.skaiciuoti();
+            A.push_back ( s );
         }
 
-        else if (pasirinkimas==2) {
-            stud s;
-            cout<<"Iveskite varda ir pavarde: "<<endl;
-            cin>>s.vardas >> s.pavarde;
+        else if ( pasirinkimas == 2 )//Ivesti varda generuoti pazymius
+        {
+            string v, p;
+            cout << "Iveskite varda ir pavarde: ";
+            cin >> v >> p;
 
-            int nd;
-            cout<<"Kiek generuoti namu darbu? "<<endl;
-            cin>>nd;
+            cout << "Kiek generuoti namu darbu? ";
+            int ndk = s_int();
 
-            for (int i = 0; i<nd; i++)
-            s.tarp.push_back(atsitiktinis());
+            vector<double> nd;
 
-            s.egz=atsitiktinis();
+            for ( int i = 0; i < ndk; i++ )
+                nd.push_back ( atsitiktinis() );
 
-            skaiciuoti(s);
-            A.push_back(s);
+            double egz = atsitiktinis();
+
+            Student s ( v, p, nd, egz );
+            s.skaiciuoti();
+            A.push_back ( s );
         }
 
-        else if (pasirinkimas==3) {
-            stud s;
+        else if ( pasirinkimas == 3 )//Generuoti viska
+        {
+            static vector<string> vardai = {"Mykolas", "Darius", "Motejus", "Nojus", "Jonas"};
+            static vector<string> pavardes = {"Matulis", "Navierauskas", "Motejunas", "Stankus", "Mezetis"};
 
-            static vector<string>vardai={"Mykolas","Darius","Motejus", "Nojus", "Jonas"};
-            static vector<string>pavardes={"Matulis","Navierauskas","Motejunas","Stankus","Mezetis"};
+            string v = vardai[rand() % vardai.size()];
+            string p = pavardes[rand() % pavardes.size()];
 
-            s.vardas=vardai[rand()%vardai.size()];
-            s.pavarde=pavardes[rand()%pavardes.size()];
+            int ndk = rand() % 7 + 3;
+            vector<double> nd;
 
-            int nd = rand()%7+3;
-            for (int i = 0; i<nd; i++)
-                s.tarp.push_back(atsitiktinis());
+            for ( int i = 0; i < ndk; i++ )
+                nd.push_back ( atsitiktinis() );
 
-            s.egz=atsitiktinis();
+            double egz = atsitiktinis();
 
-            skaiciuoti(s);
-            A.push_back(s);
+            Student s ( v, p, nd, egz );
+            s.skaiciuoti();
+            A.push_back ( s );
+        }
+
+        else if ( pasirinkimas == 4 )//skaityti is duomenu failo
+        {
+            ifstream duom ( "kursiokai.txt" );
+
+            if ( !duom )
+            {
+                cout << "Nepavyko atidaryti failo." << endl;
+                continue;
+            }
+
+            Student s;
+            while(duom>>s)
+                A.push_back(s);
+
+            cout<<"Failas surastas: "<<A.size()<<" studentu"<<endl;
 
         }
 
-        else if (pasirinkimas==4){
-
+        else if ( pasirinkimas == 6 )//generuoti duomenu fila
+        {
+            cout << "Kiek mokiniu norite, kad butu faile? ";
+            int mok = s_int();
+            cout << "Kiek pazymiu kiekvienam? ";
+            int paz = s_int();
+            generuoti_studentus ( mok, paz );
         }
 
-        else {
-            cout<<"Neteisingas pasirinkimas"<<endl;
+        else
+        {
+            cout << "Neteisingas pasirinkimas." << endl;
         }
     }
 
-    /*cout<<left<<setw(15)<<"Pavarde"<<left<<setw(15)<<"Vardas"<<right<<setw(20)<<"Galutinis (Vid.)"<<right<<setw(20)<<"Galutinis (Med.)"<<endl;
+    cout << "1 - Rusiavimas pagal varda" << endl;
+    cout << "2 - Rusiavimas pagal pavarde" << endl;
+    cout << "3 - Rusiavimas pagal galutini (vidurki)" << endl;
+    cout << "4 - Rusiavimas pagal galutini (mediana)" << endl;
+    cout << "Pasirinkite: " << endl;
 
-    cout<<string(70,'-')<<endl;
+    int rus = s_int();
 
-    for (auto &s:A)
-        cout<<left<<setw(15)<<s.pavarde<<left<<setw(15)<<s.vardas<<right<<setw(20)<<fixed<<setprecision(2)<<s.vid<<right<<setw(20)<<fixed<<setprecision(2)<<s.med<<endl;
-*/
-    spausdinti_lentele(A);
+    switch ( rus )
+    {
+    case 1: //Rikiuoti pagal varda
+        sort ( A.begin(), A.end(), [] ( const Student & a, const Student & b )
+        {
+            return a.vardas() < b.vardas();
+        } );
+        break;
+
+    case 2://Rikiuoti pagal pavarde
+        sort ( A.begin(), A.end(), [] ( const Student & a, const Student & b )
+        {
+            return a.pavarde() < b.pavarde();
+        } );
+        break;
+
+    case 3: //Rikiuoti pagal vidurki
+        sort ( A.begin(), A.end(), [] ( const Student & a, const Student & b )
+        {
+            return a.vid() > b.vid();
+        } );
+        break;
+
+    case 4: //Rikiuoti pagal mediana
+        sort ( A.begin(), A.end(), [] ( const Student & a, const Student & b )
+        {
+            return a.med() > b.med();
+        } );
+        break;
+    }
+
+    cout << "Kaip norite isvesti duomenis?" << endl;
+    cout << "1 - Tik ekrane" << endl;
+    cout << "2 - Tik faile" << endl;
+    cout << "3 - Ekrane ir faile" << endl;
+    cout << "Pasirinkite: " << endl;
+
+    int pas = s_int();
+    spausdinti_lentele ( A, pas );
 
     return 0;
 }
