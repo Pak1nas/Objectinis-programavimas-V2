@@ -12,7 +12,7 @@ using namespace std;
 //sukuriamas tuscias studentas
 Student::Student() : zmogus("", ""), egz_ ( 0 ), vid_ ( 0 ), med_ ( 0 ) {}
 //inicializuojami paveldeti zmogus ir studentas laukai
-Student::Student ( const string& v, const string& p, const vector<double>& nd, double egz ) : zmogus(v, p), nd_ ( nd ), egz_ ( egz ), vid_ ( 0 ), med_ ( 0 ) {}
+Student::Student ( const string& v, const string& p, const Vector<double>& nd, double egz ) : zmogus(v, p), nd_ ( nd ), egz_ ( egz ), vid_ ( 0 ), med_ ( 0 ) {}
 //copy konstruktorius
 Student::Student ( const Student& other ) : zmogus(other.vardas_, other.pavarde_), nd_ ( other.nd_ ), egz_ ( other.egz_ ), vid_ ( other.vid_ ), med_ ( other.med_ ) {}
 //move konstruktorius
@@ -105,7 +105,7 @@ std::istream& operator>>(std::istream& is, Student& s){
     getline(is, line);
 
     istringstream ss(line);
-    vector<double>temp;
+    Vector<double>temp;
     double x;
 
     while (ss>>x)
@@ -170,7 +170,7 @@ int atsitiktinis()
     return rand() % 11;
 }
 //Spausdinimas i fila / ekrana
-void spausdinti_lentele ( const vector<Student>& A, int pas )
+void spausdinti_lentele ( const Vector<Student>& A, int pas )
 {
     ofstream kiet ( "kietekai.txt" );
     ofstream varg ( "vargsiukai.txt" );
