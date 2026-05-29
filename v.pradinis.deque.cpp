@@ -10,6 +10,8 @@ int main()
     cin.exceptions ( ios::failbit | ios::badbit );
 
     deque<stud> A;
+    deque<stud> varg;
+    deque<stud> kiet;
 
     while ( true )
     {
@@ -129,9 +131,15 @@ int main()
         }
     }
 
+    cout << "Strategija:" << endl << "1-Strategija 1" << endl << "2-Strategija 2" <<endl<<"3-Strategija 3"<< endl<<"Pasirinkite viena"<<endl;
+
+    int pass=s_int();
+
     cout << "Rusiavimas:" << endl << "1 - pagal varda" << endl << "2 - pagal pavarde" << endl << "3 - pagal vidurki" << endl << "4 - pagal mediana" << endl;
 
     int rus = s_int();
+
+
 
     switch ( rus )
     {
@@ -163,11 +171,12 @@ int main()
         } );
         break;
     }
+    skaidymas(A, varg, kiet, pass);
 
-    cout << "Isvedimas: " << endl"1 - ekranas" << endl"2 - failas" << endl << "3 - abu" << endl;
+    cout << "Isvedimas: " << endl<<"1 - tik i ekranas" << endl<<"2 - tik i failas" << endl << "3 - Faila ir ekrana" << endl;
     int pas = s_int();
 
-    spausdinti_lentele ( A, pas );
+    spausdinti_lentele ( A, pas, pass);
 
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> diff = end - start;
