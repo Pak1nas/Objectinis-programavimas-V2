@@ -23,6 +23,9 @@ private:
             new ( new_data + i ) T ( std::move_if_noexcept ( data_[i] ) );
             data_[i].~T();
         }
+        for(std::size_t i=0; i<size_; ++i){
+            data_[i].~T();
+        }
 
         ::operator delete ( data_ );
         data_ = new_data;
