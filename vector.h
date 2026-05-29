@@ -1,140 +1,76 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <initializer_list>
+#include <algorithm>
 #include <stdexcept>
-#include <utility>
-#include <cstddef>
+#include <initializer_list>
 
 template <typename T>
-class Vector
-{
+class Vector {
 private:
     T* data_;
-    std::size_t size_;
-    std::size_t capacity_;
+    size_t size_;
+    size_t capacity_;
 
-    void reallocate ( std::size_t new_cap )
-    {
-        T* new_data = static_cast<T*> ( ::operator new ( sizeof ( T ) * new_cap ) );
-
-        for ( std::size_t i = 0; i < size_; ++i )
-        {
-            new ( new_data + i ) T ( std::move_if_noexcept ( data_[i] ) );
-            data_[i].~T();
-        }
-        for(std::size_t i=0; i<size_; ++i){
-            data_[i].~T();
-        }
-
-        ::operator delete ( data_ );
+    void reallocate(size_t new_cap) {
+        T* new_data = new T[new_cap];
+        for (size_t i = 0; i < size_; ++i)
+            new_data[i] = std::move(data_[i]);
+        delete[] data_;
         data_ = new_data;
         capacity_ = new_cap;
     }
 
 public:
-    Vector() : data_ ( nullptr ), size_ ( 0 ), capacity_ ( 0 ) {}
+    using iterator = T*;
+    using const_iterator = const T*;
 
-    explicit Vector ( std::size_t n ) : data_ ( nullptr ), size_ ( 0 ), capacity_ ( 0 )
-    {
-        if ( n > 0 )
-        {
-            data_ = static_cast<T*> ( ::operator new ( sizeof ( T ) * n ) );
 
-            for ( std::size_t i = 0; i < n; ++i )
-            {
-                new ( data_ + i ) T();
-            }
+    Vector() : data_(nullptr), size_(0), capacity_(0) {}
 
-            size_ = capacity_ = n;
-        }
+
+    explicit Vector(size_t n) : data_(new T[n]), size_(n), capacity_(n) {
+        for (size_t i = 0; i < size_; ++i)
+            data_[i] = T();
     }
 
-    Vector ( std::size_t n, const T& value ) : data_ ( nullptr ), size_ ( 0 ), capacity_ ( 0 )
-    {
-        if ( n > 0 )
-        {
-            data_ = static_cast<T*> ( ::operator new ( sizeof ( T ) * n ) );
-
-            for ( std::size_t i = 0; i < n; ++i )
-            {
-                new ( data_ + i ) T ( value );
-            }
-
-            size_ = capacity_ = n;
-        }
+    Vector(std::initializer_list<T> init) : data_(new T[init.size()]), size_(init.size()), capacity_(init.size()) {
+        size_t i = 0;
+        for (const T& val : init)
+            data_[i++] = val;
     }
 
-    Vector ( std::initializer_list<T> init ) : data_ ( nullptr ), size_ ( 0 ), capacity_ ( 0 )
-    {
-        if ( init.size() > 0 )
-        {
-            data_ = static_cast<T*> ( ::operator new ( sizeof ( T ) * init.size() ) );
-            std::size_t i = 0;
 
-            for ( const auto& x : init )
-            {
-                new ( data_ + i ) T ( x );
-                ++i;
-            }
-
-            size_ = capacity_ = init.size();
-        }
+    Vector(const Vector& other) : data_(new T[other.size_]), size_(other.size_), capacity_(other.size_) {
+        for (size_t i = 0; i < size_; ++i)
+            data_[i] = other.data_[i];
     }
 
-    Vector ( const Vector& other ) : data_ ( nullptr ), size_ ( 0 ), capacity_ ( 0 )
-    {
-        if ( other.size_ > 0 )
-        {
-            data_ = static_cast<T*> ( ::operator new ( sizeof ( T ) * other.size_ ) );
 
-            for ( std::size_t i = 0; i < other.size_; ++i )
-            {
-                new ( data_ + i ) T ( other.data_[i] );
-            }
-
-            size_ = capacity_ = other.size_;
-        }
-    }
-
-    Vector ( Vector&& other ) noexcept
-        : data_ ( other.data_ ), size_ ( other.size_ ), capacity_ ( other.capacity_ )
-    {
+    Vector(Vector&& other) noexcept : data_(other.data_), size_(other.size_), capacity_(other.capacity_) {
         other.data_ = nullptr;
         other.size_ = 0;
         other.capacity_ = 0;
     }
 
-    Vector& operator= ( const Vector& other )
-    {
-        if ( this != &other )
-        {
-            clear();
 
-            if ( other.size_ > capacity_ )
-            {
-                ::operator delete ( data_ );
-                data_ = static_cast<T*> ( ::operator new ( sizeof ( T ) * other.size_ ) );
-                capacity_ = other.size_;
-            }
+    ~Vector() {
+        delete[] data_;
+    }
 
-            for ( std::size_t i = 0; i < other.size_; ++i )
-            {
-                new ( data_ + i ) T ( other.data_[i] );
-            }
-
-            size_ = other.size_;
+    // Copy assignment
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            Vector temp(other);
+            swap(temp);
         }
-
         return *this;
     }
 
-    Vector& operator= ( Vector&& other ) noexcept
-    {
-        if ( this != &other )
-        {
-            clear();
-            ::operator delete ( data_ );
+    // Move assignment
+    Vector& operator=(Vector&& other) noexcept {
+        if (this != &other) {
+            delete[] data_;
             data_ = other.data_;
             size_ = other.size_;
             capacity_ = other.capacity_;
@@ -142,162 +78,89 @@ public:
             other.size_ = 0;
             other.capacity_ = 0;
         }
-
         return *this;
     }
 
-    ~Vector()
-    {
-        clear();
-        ::operator delete ( data_ );
+    // Element access
+    T& operator[](size_t index) { return data_[index]; }
+    const T& operator[](size_t index) const { return data_[index]; }
+
+    T& at(size_t index) {
+        if (index >= size_)
+            throw std::out_of_range("Vector::at");
+        return data_[index];
     }
 
-    std::size_t size() const
-    {
-        return size_;
-    }
-    std::size_t capacity() const
-    {
-        return capacity_;
-    }
-    bool empty() const
-    {
-        return size_ == 0;
+    const T& at(size_t index) const {
+        if (index >= size_)
+            throw std::out_of_range("Vector::at");
+        return data_[index];
     }
 
-    void reserve ( std::size_t new_cap )
-    {
-        if ( new_cap > capacity_ ) reallocate ( new_cap );
+    T& back() {
+        return data_[size_ - 1];
     }
 
-    void resize ( std::size_t new_size )
-    {
-        if ( new_size < size_ )
-        {
-            for ( std::size_t i = new_size; i < size_; ++i )
-            {
-                data_[i].~T();
-            }
+    const T& back() const {
+        return data_[size_ - 1];
+    }
 
-            size_ = new_size;
+    // Iterators
+    iterator begin() { return data_; }
+    const_iterator begin() const { return data_; }
+    iterator end() { return data_ + size_; }
+    const_iterator end() const { return data_ + size_; }
+
+    // Capacity
+    size_t size() const { return size_; }
+    size_t capacity() const { return capacity_; }
+    bool empty() const { return size_ == 0; }
+
+    void reserve(size_t new_cap) {
+        if (new_cap > capacity_)
+            reallocate(new_cap);
+    }
+
+    void resize(size_t new_size) {
+        if (new_size > capacity_)
+            reallocate(new_size);
+        if (new_size > size_) {
+            for (size_t i = size_; i < new_size; ++i)
+                data_[i] = T();
         }
-        else if ( new_size > size_ )
-        {
-            reserve ( new_size );
-
-            for ( std::size_t i = size_; i < new_size; ++i )
-            {
-                new ( data_ + i ) T();
-            }
-
-            size_ = new_size;
-        }
+        size_ = new_size;
     }
 
-    void push_back ( const T& value )
-    {
-        if ( size_ == capacity_ )
-        {
-            reserve ( capacity_ == 0 ? 1 : capacity_ * 2 );
+    // Modifiers
+    void push_back(const T& value) {
+        if (size_ >= capacity_) {
+            size_t new_cap = (capacity_ == 0) ? 1 : capacity_ * 2;
+            reallocate(new_cap);
         }
-
-        new ( data_ + size_ ) T ( value );
-        ++size_;
+        data_[size_++] = value;
     }
 
-    void push_back ( T&& value )
-    {
-        if ( size_ == capacity_ )
-        {
-            reserve ( capacity_ == 0 ? 1 : capacity_ * 2 );
+    void push_back(T&& value) {
+        if (size_ >= capacity_) {
+            size_t new_cap = (capacity_ == 0) ? 1 : capacity_ * 2;
+            reallocate(new_cap);
         }
-
-        new ( data_ + size_ ) T ( std::move ( value ) );
-        ++size_;
+        data_[size_++] = std::move(value);
     }
 
-    void pop_back()
-    {
-        if ( size_ == 0 ) return;
-
-        data_[size_ - 1].~T();
-        --size_;
+    void pop_back() {
+        if (size_ > 0)
+            --size_;
     }
 
-    void clear()
-    {
-        for ( std::size_t i = 0; i < size_; ++i )
-        {
-            data_[i].~T();
-        }
-
+    void clear() {
         size_ = 0;
     }
 
-    T& operator[] ( std::size_t idx )
-    {
-        return data_[idx];
-    }
-    const T& operator[] ( std::size_t idx ) const
-    {
-        return data_[idx];
-    }
-
-    T& at ( std::size_t idx )
-    {
-        if ( idx >= size_ ) throw std::out_of_range ( "Vector::at" );
-
-        return data_[idx];
-    }
-
-    const T& at ( std::size_t idx ) const
-    {
-        if ( idx >= size_ ) throw std::out_of_range ( "Vector::at" );
-
-        return data_[idx];
-    }
-
-    T& back()
-    {
-        return data_[size_ - 1];
-    }
-    const T& back() const
-    {
-        return data_[size_ - 1];
-    }
-
-    T* data()
-    {
-        return data_;
-    }
-    const T* data() const
-    {
-        return data_;
-    }
-
-    T* begin()
-    {
-        return data_;
-    }
-    T* end()
-    {
-        return data_ + size_;
-    }
-    const T* begin() const
-    {
-        return data_;
-    }
-    const T* end() const
-    {
-        return data_ + size_;
-    }
-    const T* cbegin() const
-    {
-        return data_;
-    }
-    const T* cend() const
-    {
-        return data_ + size_;
+    void swap(Vector& other) noexcept {
+        std::swap(data_, other.data_);
+        std::swap(size_, other.size_);
+        std::swap(capacity_, other.capacity_);
     }
 };
 
