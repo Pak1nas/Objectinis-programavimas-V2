@@ -3,8 +3,7 @@
 
 #include "zmogus.h"
 #include <string>
-#include <vector>
-#include "Vector.h"
+#include "vector.h"
 
 class Student : public zmogus {
 private:
@@ -14,7 +13,6 @@ private:
     double med_;
 
 public:
-    //Konstruktoriai
     Student();
     Student(const std::string& v, const std::string& p, const Vector<double>& nd, double egz);
 
@@ -27,22 +25,17 @@ public:
 
     ~Student();
 
-    //vidurkio/medianos skaiciavimas
     void skaiciuoti();
 
-    //getteriai
     double vid() const;
     double med() const;
 
-    //perrasomas abstraktus metodas
     void printInfo() const override;
 
-    //<< >> operatoriai
     friend std::ostream& operator<<(std::ostream& os, const Student& s);
     friend std::istream& operator>>(std::istream& is, Student& s);
 };
 
-//pagalbines funkcijos
 int s_int();
 double s_double();
 int atsitiktinis();
